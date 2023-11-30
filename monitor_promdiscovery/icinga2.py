@@ -54,8 +54,11 @@ class Icincga2Config(HostByHostgroup):
             all_hostgroups = self.hostgroup
 
         for hostgroup in all_hostgroups:
-            body = {"attrs": ["__name", "name"],
-                    "filter": '\"{}\" in host.groups'.format(hostgroup)}
+            if hostgroup != '*':
+                body = {"attrs": ["__name", "name"],
+                        "filter": '\"{}\" in host.groups'.format(hostgroup) }
+            else:
+                body = {"attrs": ["__name", "name"]}
 
             request = Request(self.connection)
             response = request.post('/v1/objects/hosts', body)
